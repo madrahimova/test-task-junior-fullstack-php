@@ -2,7 +2,6 @@
 
 namespace src;
 
-use InvalidArgumentException;
 use SplQueue;
 
 // Список районов
@@ -101,6 +100,7 @@ function bfs(int $index): void
 /**
  * Усложнение: поиск близких сотрудников
  * @param string $area название района, для которого нужно найти близких сотрудников
+ * @return array|null близкие сотрудники
  */
 function find_nearby_workers(string $area): ?array
 {

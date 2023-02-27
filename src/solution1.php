@@ -75,7 +75,7 @@ $nearby_workers = array();
  * Поиск в ширину
  * Допустим, что $nearby[$index] отсортирован по близости к району $index
  * Тогда 1-й элемент $nearby_workers - ближайший сотрудник
- * @param $index int индекс района, из которого начинаем поиск
+ * @param int $index индекс района, из которого начинаем поиск
  */
 function bfs(int $index): void
 {

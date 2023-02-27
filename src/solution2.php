@@ -35,7 +35,7 @@ function is_valid(string $interval): bool
 
 /**
  * Вспомогательная проверка в случае, если $list зациклен
- * @return bool есть пересечние?
+ * @return bool есть пересечение?
  */
 function intersect($new_start, $new_end, $start, $end): bool
 {

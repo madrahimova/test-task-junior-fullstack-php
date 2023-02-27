@@ -19,26 +19,6 @@ function get_parts(string $interval): array
 }
 
 /**
- * Получение начала интервала
- * @param array $parts части интервала
- * @return array часы и минуты начала интервала
- */
-function get_start(array $parts): array
-{
-    return explode(":", $parts[0]);
-}
-
-/**
- * Получение конца интервала
- * @param array $parts части интервала
- * @return array часы и минуты конца интервала
- */
-function get_end(array $parts): array
-{
-    return explode(":", $parts[1]);
-}
-
-/**
  * @param string $interval временной интервал в формате "чч:мм"
  * @return bool интервал валиден?
  */

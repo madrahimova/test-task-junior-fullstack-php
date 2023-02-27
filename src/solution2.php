@@ -59,15 +59,15 @@ function is_valid(string $interval): bool
  */
 function intersect($new_start, $new_end, $start, $end): bool
 {
-    if ($new_start > $new_end) {
-        if ($start > $end)
+    if ($new_start >= $new_end) {
+        if ($start >= $end)
             return true;
         return intersect($start, $end, $new_start, $new_end);
     }
     if ($start > $end)
-        return $start < $new_end || $end > $new_start;
+        return $start <= $new_end || $end >= $new_start;
     else
-        return $start < $new_end && $end > $new_start;
+        return $start <= $new_end && $end >= $new_start;
 }
 
 /**

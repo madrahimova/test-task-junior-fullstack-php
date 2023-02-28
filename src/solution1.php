@@ -105,9 +105,8 @@ function bfs(int $index): void
 function find_nearby_workers(string $area): ?array
 {
     global $areas, $nearby_workers;
-    if (!in_array($area, $areas)) {
+    if (!in_array($area, $areas))
         return null;
-    }
     bfs(array_search($area, $areas));
     return $nearby_workers;
 }

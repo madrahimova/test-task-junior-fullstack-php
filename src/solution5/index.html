@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solution 5</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/additional-methods.min.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/dataTables.bootstrap5.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
+</head>
+<body>
+<div class="h-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="container wrapper p-0">
+        <div class="container p-0">
+            <h1 class="text-center">Олимпиада</h1>
+            <form id="form" method="post" action="">
+                <div class="form-group">
+                    <label for="input">Участники</label>
+                    <input id="input" name="input" placeholder="введите имена участников через запятую" type="text"
+                           class="form-control align-self-center">
+                </div>
+                <input type="submit" class="btn btn-primary" value="Добавить"/>
+            </form>
+        </div>
+        <div class="container mt-3">
+            <div class="sticky">
+                <div class="mb-5">
+                    <table id="table" class="table border mb-5">
+                        <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">имя</th>
+                            <th scope="col">очки</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ошибка</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let id = 1;
+
+    function showTable() {
+        $("#table").addClass("visible");
+    }
+
+    function hideModal() {
+        $("#modal").modal("hide");
+    }
+
+    function showModal(error) {
+        $("#modal").modal("show");
+        $("#modal .modal-body").html(`<p>${error}</p>`);
+    }
+
+    function addRow(table) {
+        $.ajax("add_row.php", {
+                type: "POST",
+                data: $("#form").serialize(),
+                success: function (data) {
+                    const json = JSON.parse(data);
+                    if (json["error"]) {
+                        showModal(json["error"]);
+                        return;
+                    }
+                    for (let item of json) {
+                        $("#table tbody").append(
+                            `<tr>
+                                <th scope="row">${id}</th>
+                                <td>${item["name"]}</td>
+                                <td>${item["score"]}</td>
+                            </tr>`
+                        );
+                        table.row.add([id, item["name"], item["score"]]).draw(false);
+                        id++;
+                    }
+                    showTable();
+                },
+            }
+        );
+    }
+
+    $(document).on('submit', '#form', function (e) {
+        e.preventDefault();
+    });
+
+    $(document).ready(function () {
+        let table = $("#table").DataTable({
+            searching: false, paging: false, info: false
+        });
+        $("#form").validate({
+            onkeyup: false,
+            onclick: false,
+            onfocusout: false,
+            rules: {
+                input: {
+                    pattern: "[а-яА-ЯёЁ,]+",
+                    required: true
+                }
+            },
+            messages: {
+                input: {
+                    pattern: "Можно вводить только буквы кириллицы и запятые",
+                    required: "Введите хотя бы одно имя"
+                }
+            },
+            submitHandler: function () {
+                addRow(table, id);
+            },
+            showErrors: function (errorMap, errorList) {
+                if (!errorList.length)
+                    return;
+                showModal(errorList[errorList.length - 1].message);
+            }
+        });
+    });
+</script>
+</body>
+</html>

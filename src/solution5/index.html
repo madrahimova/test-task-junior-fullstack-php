@@ -20,12 +20,16 @@
         <div class="container p-0">
             <h1 class="text-center">Олимпиада</h1>
             <form id="form" method="post" action="">
-                <div class="form-group">
-                    <label for="input">Участники</label>
-                    <input id="input" name="input" placeholder="введите имена участников через запятую" type="text"
-                           class="form-control align-self-center">
+                <label for="input">Участники</label>
+                <div class="form-adaptive">
+                    <div class="input-group">
+                        <input id="input" name="input" placeholder="введите имена участников через запятую" type="text"
+                               class="form-control align-self-center">
+                    </div>
+                    <div class="input-group-append">
+                        <input id="submit" type="submit" class="btn btn-primary" value="Добавить"/>
+                    </div>
                 </div>
-                <input type="submit" class="btn btn-primary" value="Добавить"/>
             </form>
         </div>
         <div class="container mt-3">
@@ -96,6 +100,7 @@
                         id++;
                     }
                     showTable();
+                    $("#form").trigger("reset");
                 },
             }
         );
